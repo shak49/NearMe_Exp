@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+import UIKit
 import MapKit
 
 struct ContentView: View {
-    @ObservedObject private var manager = LocationManager()
+    private var manager = LocationManager()
+    
     @State private var landmarks = [Landmark]()
     @State private var searchTerm: String = ""
+    @State private var tapped: Bool = false
     
     var body: some View {
         ZStack(alignment: .top) {
@@ -22,7 +25,13 @@ struct ContentView: View {
             .textFieldStyle(RoundedBorderTextFieldStyle())
             .offset(y: 44)
             .padding()
+            PlaceListView(landmarks: self.landmarks) {
+                self.tapped.toggle()
+            }
+            .animation(.spring())
+            .offset(y: calculateOffset())
         }
+        .ignoresSafeArea()
     }
     
     private func getNearByLandmarks() {
@@ -38,6 +47,16 @@ struct ContentView: View {
                 print($0.placemark)
                 Landmark(placemark: $0.placemark)
             }
+        }
+    }
+    
+    func calculateOffset() -> CGFloat {
+        if self.landmarks.count > 0 && !self.tapped {
+            return UIScreen.main.bounds.size.height - UIScreen.main.bounds.size.height / 4
+        } else if self.tapped {
+            return 100
+        } else {
+            return UIScreen.main.bounds.size.height
         }
     }
 }

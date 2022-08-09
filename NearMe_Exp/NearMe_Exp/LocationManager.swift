@@ -9,9 +9,9 @@ import UIKit
 import MapKit
 
 
-class LocationManager: NSObject, ObservableObject {
+class LocationManager: NSObject {
     private let locationManager = CLLocationManager()
-    @Published var location: CLLocation? = nil
+    var location: CLLocation? = nil
     
     override init() {
         super.init()
