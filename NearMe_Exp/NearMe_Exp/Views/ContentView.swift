@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct ContentView: View {
+    @ObservedObject private var manager = LocationManager()
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        MapView()
     }
 }
 
